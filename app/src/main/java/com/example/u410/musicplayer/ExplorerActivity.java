@@ -21,7 +21,8 @@ public class ExplorerActivity extends AppCompatActivity {
 
     private ArrayList<String> mFiles = new ArrayList<>();
     private String mPath = Environment.getRootDirectory().toString();
-    private ArrayAdapter<String> mAdapter;
+    //private ArrayAdapter<String> mAdapter;
+    private ExplorerListItemAdapter mAdapter;
     private ListView mExplorerListView;
 
     @Override
@@ -29,7 +30,8 @@ public class ExplorerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explorer);
 
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFiles);
+        //mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFiles);
+        mAdapter = new ExplorerListItemAdapter(mFiles);
 
         mExplorerListView = (ListView) findViewById(R.id.explorer_list);
 
@@ -56,7 +58,7 @@ public class ExplorerActivity extends AppCompatActivity {
 
     @OnItemClick(R.id.explorer_list)
     public void onExplorerListViewItemClick(int position) {
-        String clickedFile = mAdapter.getItem(position);
+        String clickedFile = (String) mAdapter.getItem(position);
         mPath+=("/" + clickedFile);
         getFiles();
         mAdapter.notifyDataSetChanged();
