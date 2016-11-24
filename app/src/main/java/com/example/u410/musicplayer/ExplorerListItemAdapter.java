@@ -1,13 +1,16 @@
 package com.example.u410.musicplayer;
 
+import android.graphics.drawable.Icon;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,6 +25,8 @@ public class ExplorerListItemAdapter extends BaseAdapter {
     static class ViewHolder {
         @BindView(R.id.fileName)
         TextView fileName;
+        @BindView(R.id.image)
+        ImageView image;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this,view);
@@ -66,6 +71,12 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         }
 
         holder.fileName.setText(mFiles.get(position));
+        String path = (String) getItem(position);
+        File file = new File(path);
+        holder.image.setImageResource(R.drawable.folder);
+        if (file.isDirectory() == false) {
+            holder.image.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }

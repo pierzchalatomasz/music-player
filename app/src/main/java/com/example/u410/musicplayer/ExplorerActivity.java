@@ -42,7 +42,7 @@ public class ExplorerActivity extends AppCompatActivity {
         Log.d("jakis tag","jakis tekst");
 
         ButterKnife.bind(this);
-
+        mAdapter.notifyDataSetChanged();
     }
 
     public void getFiles() {
