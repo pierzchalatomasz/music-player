@@ -39,8 +39,6 @@ public class ExplorerActivity extends AppCompatActivity {
 
         getFiles();
 
-        Log.d("jakis tag","jakis tekst");
-
         ButterKnife.bind(this);
         mAdapter.notifyDataSetChanged();
     }
@@ -58,9 +56,37 @@ public class ExplorerActivity extends AppCompatActivity {
 
     @OnItemClick(R.id.explorer_list)
     public void onExplorerListViewItemClick(int position) {
-        String clickedFile = (String) mAdapter.getItem(position);
-        mPath+=("/" + clickedFile);
-        getFiles();
-        mAdapter.notifyDataSetChanged();
+        String clickedFileName = (String) mAdapter.getItem(position);
+        String tempPath = createPathOfClickedFile(clickedFileName);
+        tryGoToPath(tempPath);
+        //Clicking twice on directory with no permissions will crash an app (fileName will append to mPath but will not go to that path)
+    }
+
+    private String createPathOfClickedFile(String clickedFileName) {
+        String tempPath;
+
+        if (clickedFileName == ".."){
+            File file = new File(mPath);
+            tempPath = file.getParentFile().getPath();
+        }
+        else {
+            tempPath = mPath + "/" + clickedFileName;
+        }
+
+        return tempPath;
+    }
+
+    private void tryGoToPath(String path) {
+        File file = new File(path);
+        try {
+            if (file.isDirectory()) {
+                mPath = path;
+                getFiles();
+                mAdapter.setmPath(mPath);
+                mAdapter.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            Log.d("Wrong directory","No permissions to this directory!");
+        }
     }
 }

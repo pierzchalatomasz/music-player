@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         TextView fileName;
         @BindView(R.id.image)
         ImageView image;
+        @BindView(R.id.checkBox)
+        CheckBox checkBox;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this,view);
@@ -34,6 +37,11 @@ public class ExplorerListItemAdapter extends BaseAdapter {
     }
 
     List<String> mFiles;
+    String mPath;
+
+    public void setmPath(String path) {
+        this.mPath = path;
+    }
 
     public ExplorerListItemAdapter(List<String> files) {
         mFiles = files;
@@ -71,11 +79,13 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         }
 
         holder.fileName.setText(mFiles.get(position));
-        String path = (String) getItem(position);
-        File file = new File(path);
+        String fileName = (String) getItem(position);
+        String tempPath = mPath + "/" + fileName;
+        File file = new File(tempPath);
         holder.image.setImageResource(R.drawable.folder);
         if (file.isDirectory() == false) {
-            holder.image.setVisibility(View.VISIBLE);
+            //holder.image.setVisibility(View.VISIBLE);
+            //holder.checkBox.setVisibility(View.VISIBLE);
         }
 
         return convertView;
