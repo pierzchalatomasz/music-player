@@ -1,6 +1,7 @@
 package com.example.u410.musicplayer;
 
 import android.graphics.drawable.Icon;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class ExplorerListItemAdapter extends BaseAdapter {
     }
 
     List<String> mFiles;
-    String mPath;
+    String mPath = Environment.getRootDirectory().toString();
 
     public void setmPath(String path) {
         this.mPath = path;
@@ -84,8 +85,12 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         File file = new File(tempPath);
         holder.image.setImageResource(R.drawable.folder);
         if (file.isDirectory() == false) {
-            //holder.image.setVisibility(View.VISIBLE);
-            //holder.checkBox.setVisibility(View.VISIBLE);
+            holder.image.setVisibility(View.INVISIBLE);
+            holder.checkBox.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.image.setVisibility(View.VISIBLE);
+            holder.checkBox.setVisibility(View.INVISIBLE);
         }
 
         return convertView;

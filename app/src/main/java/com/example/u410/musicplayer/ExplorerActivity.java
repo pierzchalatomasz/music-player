@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import java.io.File;
@@ -30,11 +33,8 @@ public class ExplorerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explorer);
 
-        //mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mFiles);
         mAdapter = new ExplorerListItemAdapter(mFiles);
-
         mExplorerListView = (ListView) findViewById(R.id.explorer_list);
-
         mExplorerListView.setAdapter(mAdapter);
 
         getFiles();
@@ -55,7 +55,13 @@ public class ExplorerActivity extends AppCompatActivity {
     }
 
     @OnItemClick(R.id.explorer_list)
-    public void onExplorerListViewItemClick(int position) {
+    public void onExplorerListViewItemClick(ListView parent, View view, int position, long id) {
+
+            CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
+            cb.setChecked(!cb.isChecked());
+            mAdapter.notifyDataSetChanged();
+
+
         String clickedFileName = (String) mAdapter.getItem(position);
         String tempPath = createPathOfClickedFile(clickedFileName);
         tryGoToPath(tempPath);
@@ -65,7 +71,7 @@ public class ExplorerActivity extends AppCompatActivity {
     private String createPathOfClickedFile(String clickedFileName) {
         String tempPath;
 
-        if (clickedFileName == ".."){
+        if (clickedFileName.equals("..")){
             File file = new File(mPath);
             tempPath = file.getParentFile().getPath();
         }
@@ -88,5 +94,25 @@ public class ExplorerActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d("Wrong directory","No permissions to this directory!");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_explorer_save_playlist, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                savePlaylist();
+                break;
+        }
+        
+        return true;
+    }
+
+    private void savePlaylist() {
     }
 }
