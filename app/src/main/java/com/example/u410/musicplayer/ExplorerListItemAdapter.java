@@ -1,6 +1,5 @@
 package com.example.u410.musicplayer;
 
-import android.graphics.drawable.Icon;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.List;
