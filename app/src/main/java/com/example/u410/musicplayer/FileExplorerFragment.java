@@ -15,6 +15,7 @@ import com.example.u410.musicplayer.R;
 import com.example.u410.musicplayer.TabExplorerActivity;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -28,7 +29,8 @@ public class FileExplorerFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private ArrayList<String> mFiles = new ArrayList<>();
-    private String mPath = Environment.getRootDirectory().toString();
+    private ArrayList<File> mFileFile = new ArrayList<>();
+    private String mPath = "/storage";//Environment.getExternalStorageDirectory().toString();
     private ExplorerListItemAdapter mAdapter;
     private ListView mExplorerListView;
 
@@ -50,25 +52,56 @@ public class FileExplorerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
-        mAdapter = new ExplorerListItemAdapter(mFiles);
-        mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
-        mExplorerListView.setAdapter(mAdapter);
-
-        getFiles();
-        mAdapter.notifyDataSetChanged();
-        ButterKnife.bind(this, rootView);
+        View rootView = null;
+        if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+            rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
+            mAdapter = new ExplorerListItemAdapter(mFiles);
+            mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
+            mExplorerListView.setAdapter(mAdapter);
+            //getAllFiles(mPath, mFileFile);
+            //getMp3FileNames(mFileFile, mFiles);
+            getContentFromPath(mPath, mFiles);
+            mAdapter.notifyDataSetChanged();
+            ButterKnife.bind(this, rootView);
+        }
         return rootView;
     }
 
-    public void getFiles() {
-        File directory = new File(mPath);
+    public void getAllFiles(String directoryName, ArrayList<File> files) {
+        File directory = new File(directoryName);
+
+        // get all the files from a directory
+        File[] fList = directory.listFiles();
+        if (fList != null) {
+            for (File file : fList) {
+                if (file.isFile()) {
+                    files.add(file);
+                } else if (file.isDirectory()) {
+                    getAllFiles(file.getAbsolutePath(), files);
+                }
+            }
+        }
+    }
+
+    public void getMp3FileNames(ArrayList<File> files, ArrayList<String> filesNames) {
+        filesNames.clear();
+        String extension;
+        for (File file : files) {
+            extension = file.getName().toString().substring(file.getName().toString().lastIndexOf(".") + 1, file.getName().toString().length());
+            if (extension.equals("mp3")) {
+                filesNames.add(file.getName().toString());
+            }
+        }
+    }
+
+    public void getContentFromPath(String path, ArrayList<String> filesNames) {
+        File directory = new File(path);
         File[] files = directory.listFiles();
 
-        mFiles.clear();
-        mFiles.add("..");
+        filesNames.clear();
+        filesNames.add("..");
         for (int i = 0; i < files.length; i++) {
-            mFiles.add(files[i].getName().toString());
+            filesNames.add(files[i].getName().toString());
         }
     }
 
@@ -106,7 +139,7 @@ public class FileExplorerFragment extends Fragment {
         try {
             if (file.isDirectory()) {
                 mPath = path;
-                getFiles();
+                getContentFromPath(mPath, mFiles);
                 mAdapter.setmPath(mPath);
                 mAdapter.notifyDataSetChanged();
             }
