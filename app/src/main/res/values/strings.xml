@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MusicPlayer</string>
+    <string name="empty_list">Dodaj muzyke klikajac w przycisk ponizej</string>
 </resources>
