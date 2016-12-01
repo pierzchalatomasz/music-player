@@ -11,17 +11,11 @@ import android.widget.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
 public class FileExplorerFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     private ArrayList<String> mFiles = new ArrayList<>();
     private ArrayList<File> mFileFile = new ArrayList<>();

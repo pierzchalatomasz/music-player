@@ -66,10 +66,7 @@ public class ExplorerListItemAdapter extends BaseAdapter {
 
         if(convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_layout, parent, false);
-
             holder = new ViewHolder(convertView);
-            //holder.fileName = (TextView) convertView.findViewById(R.id.fileName);
-
             convertView.setTag(holder);
         }
         else {

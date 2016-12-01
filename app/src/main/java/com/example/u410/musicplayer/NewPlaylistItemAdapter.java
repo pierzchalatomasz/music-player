@@ -1,14 +1,11 @@
 package com.example.u410.musicplayer;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +31,7 @@ public class NewPlaylistItemAdapter extends BaseAdapter {
     List<String> mPlaylist;
 
     public NewPlaylistItemAdapter(ArrayList<String> playlist) {
+        // zmienić/usunąć argumenty konstruktora!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         //mPlaylist = playlist;
         mPlaylist = new ArrayList<>();
         mPlaylist.add("a");
