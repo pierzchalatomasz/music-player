@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_player"
     android:layout_width="match_parent"
@@ -8,6 +9,68 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.u410.musicplayer.Player">
+    tools:context="com.example.u410.musicplayer.PlayerActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/music"
+                android:id="@+id/trackPicture"
+                android:background="@color/colorAccent" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Oasis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/artistName"
+                android:paddingBottom="5dp"
+                android:paddingTop="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textAlignment="center" />
+
+            <TextView
+                android:text="Wonderwall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/trackName"
+                android:textAlignment="center"
+                android:paddingTop="5dp" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/playButton"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

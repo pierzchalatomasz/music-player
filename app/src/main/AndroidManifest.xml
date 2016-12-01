@@ -15,7 +15,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Player"></activity>
+        <activity android:name=".PlayerActivity"></activity>
         <activity
             android:name=".TabExplorerActivity"
             android:label="@string/title_activity_tab_explorer"
