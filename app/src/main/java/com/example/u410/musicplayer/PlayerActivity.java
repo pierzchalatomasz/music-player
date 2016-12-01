@@ -9,7 +9,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +23,9 @@ public class PlayerActivity extends AppCompatActivity {
     @BindView(R.id.trackName) TextView trackName;
     @BindView(R.id.trackPicture) ImageView trackPicture;
     @BindView(R.id.playButton) Button playButton;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.seekBar) SeekBar seekBar;
+    @BindView(R.id.duration) TextView duration;
+    @BindView(R.id.currentPosition) TextView currentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +33,13 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
 
-        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        progressBar.setProgress(50);
-
         setData();
         init();
     }
 
     protected void init() {
         setOnTrackProgressListener();
+        setOnSeekBarChangeListener();
     }
 
     protected void setData() {
@@ -52,16 +55,35 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         player_.setTrack(track);
+
+        setDuration();
     }
 
     @OnClick(R.id.playButton)
     protected void playButtonClick() {
         if (!player_.isPlaying()) {
             player_.play();
+            playButton.setText("PAUSE");
         }
         else {
             player_.pause();
+            playButton.setText("PLAY");
         }
+    }
+
+    protected void setDuration() {
+        long durationMs = (long) player_.getDuration();
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(durationMs);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(durationMs) - minutes * 60;
+
+        duration.setText(minutes + ":" + seconds);
+    }
+
+    protected void setCurrentPosition(long position) {
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(position);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(position) - minutes * 60;
+
+        currentPosition.setText(minutes + ":" + seconds);
     }
 
     protected void setOnTrackProgressListener() {
@@ -69,7 +91,31 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onTrackProgress(int currentPosition) {
                 float progress = (float)currentPosition / (float)player_.getDuration() * 100;
-                progressBar.setProgress((int) progress);
+                seekBar.setProgress((int)progress);
+                setCurrentPosition((long)currentPosition);
+            }
+        });
+    }
+
+    protected void setOnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    int position = player_.getDuration() * progress / 100;
+                    player_.seekTo(position);
+                    Log.v("MUSIC_PLAYER", "" + position);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }

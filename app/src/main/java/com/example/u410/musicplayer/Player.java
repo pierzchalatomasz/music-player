@@ -48,6 +48,10 @@ public class Player {
         onTrackProgressListener_ = onTrackProgressListener;
     }
 
+    public void seekTo(int msec) {
+        player_.seekTo(msec);
+    }
+
     private Track track_;
 
     private MediaPlayer player_;

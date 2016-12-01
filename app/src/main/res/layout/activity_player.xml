@@ -55,12 +55,43 @@
                 android:textAlignment="center"
                 android:paddingTop="5dp" />
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
+            <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
-                android:layout_weight="1" />
+                android:id="@+id/seekBar"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:text="0:0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/currentPosition"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="/"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/durationSeparator"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
+                <TextView
+                    android:text="0:0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/duration"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <Button
                 android:text="Play"
