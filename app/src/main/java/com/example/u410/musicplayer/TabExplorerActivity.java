@@ -109,12 +109,11 @@ public class TabExplorerActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case EXPLORER_TAB:
-                    return FileExplorerFragment.newInstance(position + 1);
+                    return FileExplorerFragment.getInstance(position);
                 case NEW_PLAYLIST_TAB:
-                    return FileExplorerFragment.newInstance(position + 1);
+                    return NewPlaylistFragment.getInstance(position);
             }
             return null;
-
         }
 
         @Override

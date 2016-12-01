@@ -1,7 +1,6 @@
 package com.example.u410.musicplayer;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +9,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
-import com.example.u410.musicplayer.ExplorerListItemAdapter;
-import com.example.u410.musicplayer.R;
-import com.example.u410.musicplayer.TabExplorerActivity;
-
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
@@ -31,39 +26,33 @@ public class FileExplorerFragment extends Fragment {
     private ArrayList<String> mFiles = new ArrayList<>();
     private ArrayList<File> mFileFile = new ArrayList<>();
     private String mPath = "/storage";//Environment.getExternalStorageDirectory().toString();
-    private ExplorerListItemAdapter mAdapter;
+    private ExplorerListItemAdapter mExplorerAdapter;
     private ListView mExplorerListView;
 
     public FileExplorerFragment() {
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static FileExplorerFragment newInstance(int sectionNumber) {
+    public static FileExplorerFragment getInstance(int i) {
         FileExplorerFragment fragment = new FileExplorerFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = null;
-        if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
-            rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
-            mAdapter = new ExplorerListItemAdapter(mFiles);
-            mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
-            mExplorerListView.setAdapter(mAdapter);
-            //getAllFiles(mPath, mFileFile);
-            //getMp3FileNames(mFileFile, mFiles);
-            getContentFromPath(mPath, mFiles);
-            mAdapter.notifyDataSetChanged();
-            ButterKnife.bind(this, rootView);
-        }
+        View rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
+        mExplorerAdapter = new ExplorerListItemAdapter(mFiles);
+        mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
+        mExplorerListView.setAdapter(mExplorerAdapter);
+        //getAllFiles(mPath, mFileFile);
+        //getMp3FileNames(mFileFile, mFiles);
+        getContentFromPath(mPath, mFiles);
+        mExplorerAdapter.notifyDataSetChanged();
+        ButterKnife.bind(this, rootView);
+
         return rootView;
     }
 
@@ -110,10 +99,10 @@ public class FileExplorerFragment extends Fragment {
 
         CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
         cb.setChecked(!cb.isChecked());
-        mAdapter.notifyDataSetChanged();
+        mExplorerAdapter.notifyDataSetChanged();
 
 
-        String clickedFileName = (String) mAdapter.getItem(position);
+        String clickedFileName = (String) mExplorerAdapter.getItem(position);
         String tempPath = createPathOfClickedFile(clickedFileName);
         tryGoToPath(tempPath);
         mExplorerListView.setSelectionAfterHeaderView();
@@ -140,8 +129,8 @@ public class FileExplorerFragment extends Fragment {
             if (file.isDirectory()) {
                 mPath = path;
                 getContentFromPath(mPath, mFiles);
-                mAdapter.setmPath(mPath);
-                mAdapter.notifyDataSetChanged();
+                mExplorerAdapter.setmPath(mPath);
+                mExplorerAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             Log.d("Wrong directory","No permissions to this directory!");
