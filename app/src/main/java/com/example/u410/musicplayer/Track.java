@@ -29,6 +29,14 @@ public class Track {
         return meta_.extractMetadata(meta_.METADATA_KEY_GENRE);
     }
 
+    public byte[] getPicture() {
+        return meta_.getEmbeddedPicture();
+    }
+
+    public String getDuration() {
+        return meta_.extractMetadata(meta_.METADATA_KEY_DURATION);
+    }
+
     public String getPath() {
         return path_;
     }
