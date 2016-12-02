@@ -26,8 +26,6 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         TextView fileName;
         @BindView(R.id.image)
         ImageView image;
-        @BindView(R.id.checkBox)
-        CheckBox checkBox;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this,view);
@@ -78,13 +76,11 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         String tempPath = mPath + "/" + fileName;
         File file = new File(tempPath);
         holder.image.setImageResource(R.drawable.folder);
-        if (file.isDirectory() == false) {
-            holder.image.setVisibility(View.INVISIBLE);
-            holder.checkBox.setVisibility(View.VISIBLE);
+        if (file.isDirectory()) {//dodac tutaj ADD button dla file tylko!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            holder.image.setVisibility(View.VISIBLE);
         }
         else {
-            holder.image.setVisibility(View.VISIBLE);
-            holder.checkBox.setVisibility(View.INVISIBLE);
+            holder.image.setVisibility(View.INVISIBLE);
         }
 
         return convertView;

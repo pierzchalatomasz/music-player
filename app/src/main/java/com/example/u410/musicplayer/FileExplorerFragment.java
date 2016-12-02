@@ -91,10 +91,7 @@ public class FileExplorerFragment extends Fragment {
     @OnItemClick(R.id.explorer_list)
     public void onExplorerListViewItemClick(ListView parent, View view, int position, long id) {
 
-        CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
-        cb.setChecked(!cb.isChecked());
         mExplorerAdapter.notifyDataSetChanged();
-
 
         String clickedFileName = (String) mExplorerAdapter.getItem(position);
         String tempPath = createPathOfClickedFile(clickedFileName);
