@@ -10,8 +10,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/image"
-        android:visibility="visible"/>
+        android:id="@+id/image" />
 
     <TextView
         android:text="File Name"

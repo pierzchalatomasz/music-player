@@ -1,11 +1,12 @@
 package com.example.u410.musicplayer;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by kryguu on 23.11.2016.
@@ -26,6 +28,8 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         TextView fileName;
         @BindView(R.id.image)
         ImageView image;
+        @BindView(R.id.add_button)
+        Button addButton;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this,view);
@@ -60,7 +64,7 @@ public class ExplorerListItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
 
         if(convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_layout, parent, false);
@@ -71,16 +75,26 @@ public class ExplorerListItemAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.addButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Log.d(holder.fileName.toString(),"sd");//tutaj zmieniac!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
+        });
+
         holder.fileName.setText(mFiles.get(position));
         String fileName = (String) getItem(position);
         String tempPath = mPath + "/" + fileName;
         File file = new File(tempPath);
         holder.image.setImageResource(R.drawable.folder);
-        if (file.isDirectory()) {//dodac tutaj ADD button dla file tylko!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (file.isDirectory()) {
             holder.image.setVisibility(View.VISIBLE);
+            holder.addButton.setVisibility(View.INVISIBLE);
         }
         else {
             holder.image.setVisibility(View.INVISIBLE);
+            holder.addButton.setVisibility(View.VISIBLE);
         }
 
         return convertView;
