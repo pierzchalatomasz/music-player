@@ -1,8 +1,12 @@
 package com.example.u410.musicplayer;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,8 +37,11 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         ButterKnife.bind(this);
 
-        setData();
-        init();
+        playerIntent_ = new Intent(this, PlayerService.class);
+        startService(playerIntent_);
+        bindService(playerIntent_, playerServiceConnection, this.BIND_AUTO_CREATE);
+
+
     }
 
     protected void init() {
@@ -120,5 +127,23 @@ public class PlayerActivity extends AppCompatActivity {
         });
     }
 
-    private Player player_ = new Player();
+    protected ServiceConnection playerServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            PlayerService.PlayerBinder binder = (PlayerService.PlayerBinder) service;
+            player_ = binder.getService();
+
+            setData();
+            init();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+    private Intent playerIntent_;
+
+    private PlayerService player_;
 }

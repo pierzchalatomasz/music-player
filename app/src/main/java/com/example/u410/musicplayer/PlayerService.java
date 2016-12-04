@@ -1,19 +1,40 @@
 package com.example.u410.musicplayer;
 
+import android.app.IntentService;
+import android.app.Service;
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.Timer;
 
 /**
- * Created by U410 on 2016-12-01.
+ * Created by U410 on 2016-12-04.
  */
 
-public class Player {
-    public Player() {
+public class PlayerService extends Service {
+    public PlayerService() {
+        super();
         player_ = new MediaPlayer();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return playerBind_;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    public class PlayerBinder extends Binder {
+        PlayerService getService() {
+            return PlayerService.this;
+        }
     }
 
     public void setTrack(Track track) {
@@ -71,4 +92,6 @@ public class Player {
             trackProgressHandler_.postDelayed(this, 100);
         }
     };
+
+    private final IBinder playerBind_ = new PlayerBinder();
 }
