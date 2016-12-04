@@ -2,7 +2,6 @@ package com.example.u410.musicplayer;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_APPEND;
@@ -22,44 +19,50 @@ import static android.content.Context.MODE_APPEND;
 public class Playlist
 {
     private Context ctx;
-    private ArrayList<String> tracklist;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Track> tracklist;
+    private ListTrackAdapter adapter;
 
     public Playlist(Context context)
     {
         ctx = context;
-        tracklist = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(ctx, android.R.layout.simple_list_item_1, tracklist);
+        tracklist = new ArrayList<Track>();
+        adapter = new ListTrackAdapter(ctx, R.id.playlistView, tracklist);
         readPlaylist();
     }
 
-    public ArrayAdapter<String> getAdapter()
+    public ListTrackAdapter getAdapter()
     {
         return adapter;
     }
-
-    public void addTracks(ArrayList<String> trackslist)
+    public ArrayList<Track> getTracklist() { return tracklist; }
+    public Track getTrack(int position)
     {
-        for(String item : trackslist)
-            tracklist.add(item);
-        adapter.notifyDataSetChanged();
+        return tracklist.get(position);
     }
 
-    public void addTrack(String track)
+
+    public void addTracks(ArrayList<Track> trackslist)
+    {
+        for(Track item : trackslist)
+            tracklist.add(item);
+        adapter.notifyDataSetChanged();
+        savePlaylist();
+    }
+    public void addTrack(Track track)
     {
         tracklist.add(track);
         adapter.notifyDataSetChanged();
+        saveOneTrack(track);
     }
-
     public void deleteTrack(int position)
     {
         tracklist.remove(position);
         adapter.notifyDataSetChanged();
+        savePlaylist();
     }
-
     public void moveTrack(int initialPos, int finalPos)
     {
-        String item = getTrack(initialPos);
+        Track item = getTrack(initialPos);
         if(finalPos>-1)
         {
             tracklist.remove(initialPos);
@@ -71,12 +74,9 @@ public class Playlist
             tracklist.add(item);
         }
         adapter.notifyDataSetChanged();
+        savePlaylist();
     }
 
-    public String getTrack(int position)
-    {
-        return tracklist.get(position);
-    }
 
     public void savePlaylist()
     {
@@ -85,8 +85,22 @@ public class Playlist
             cleanFile();
             FileOutputStream fos = ctx.openFileOutput("appPlaylist.txt", MODE_APPEND);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
-            for(String item : tracklist)
-                outputStreamWriter.write(item + ',');
+            for(Track item : tracklist)
+                outputStreamWriter.write(item.getPath() + ',');
+            outputStreamWriter.close();
+        }
+        catch (IOException e)
+        {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+    public void saveOneTrack(Track item)
+    {
+        try
+        {
+            FileOutputStream fos = ctx.openFileOutput("appPlaylist.txt", MODE_APPEND);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fos);
+            outputStreamWriter.write(item.getPath() + ',');
             outputStreamWriter.close();
         }
         catch (IOException e)
@@ -117,14 +131,14 @@ public class Playlist
                     for (String item : stringBuilder.toString().split(","))
                     {
                         if(item.substring(item.length() - 1) == ",")
-                            addTrack(item.substring(0, item.length() - 1));
+                            tracklist.add(new Track(item.substring(0, item.length() - 1)));
                         else
-                            addTrack(item);
+                            tracklist.add(new Track(item));
                     }
+                    adapter.notifyDataSetChanged();
                 }
 
             }
-
         }
         catch (FileNotFoundException e)
         {
