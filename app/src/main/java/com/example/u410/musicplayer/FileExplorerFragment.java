@@ -26,7 +26,7 @@ public class FileExplorerFragment extends Fragment {
     public FileExplorerFragment() {
     }
 
-    public static FileExplorerFragment getInstance(int i) {
+    public static FileExplorerFragment getInstance() {
         FileExplorerFragment fragment = new FileExplorerFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
@@ -38,7 +38,10 @@ public class FileExplorerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
-        mExplorerAdapter = new ExplorerListItemAdapter(mFiles);
+
+        TabExplorerActivity tabExplorerActivity = (TabExplorerActivity) getActivity();
+
+        mExplorerAdapter = new ExplorerListItemAdapter(tabExplorerActivity, mFiles);
         mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
         mExplorerListView.setAdapter(mExplorerAdapter);
         //getAllFiles(mPath, mFileFile);

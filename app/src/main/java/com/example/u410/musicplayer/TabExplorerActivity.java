@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TabExplorerActivity extends AppCompatActivity {
 
     /**
@@ -28,6 +31,7 @@ public class TabExplorerActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private ArrayList<String> mPlaylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,18 @@ public class TabExplorerActivity extends AppCompatActivity {
 
     }
 
+    public ArrayList<String> getmPlaylist() {
+        return mPlaylist;
+    }
+
+    public void setmPlaylist(ArrayList<String> mPlaylist) {
+        this.mPlaylist = mPlaylist;
+    }
+
+    public void addTomPlaylist(String songPath) {
+        mPlaylist.add(songPath);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -95,9 +111,9 @@ public class TabExplorerActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case EXPLORER_TAB:
-                    return FileExplorerFragment.getInstance(position);
+                    return FileExplorerFragment.getInstance();
                 case NEW_PLAYLIST_TAB:
-                    return NewPlaylistFragment.getInstance(position);
+                    return NewPlaylistFragment.getInstance();
             }
             return null;
         }

@@ -1,5 +1,7 @@
 package com.example.u410.musicplayer;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.id.message;
 
 /**
  * Created by kryguu on 23.11.2016.
@@ -36,14 +41,16 @@ public class ExplorerListItemAdapter extends BaseAdapter {
         }
     }
 
-    List<String> mFiles;
+    TabExplorerActivity mTabExplorerActivity;
+    ArrayList<String> mFiles;
     String mPath = Environment.getRootDirectory().toString();
 
     public void setmPath(String path) {
         this.mPath = path;
     }
 
-    public ExplorerListItemAdapter(List<String> files) {
+    public ExplorerListItemAdapter(TabExplorerActivity tabExplorerActivity, ArrayList<String> files) {
+        mTabExplorerActivity = tabExplorerActivity;
         mFiles = files;
     }
 
@@ -63,7 +70,7 @@ public class ExplorerListItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         final ViewHolder holder;
 
         if(convertView == null) {
@@ -79,7 +86,9 @@ public class ExplorerListItemAdapter extends BaseAdapter {
 
             @Override
             public void onClick(View view) {
-                Log.d(holder.fileName.toString(),"sd");//tutaj zmieniac!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                String clickedFileName = holder.fileName.getText().toString();
+                String clickedFilePath = mPath + "/" + clickedFileName;
+                mTabExplorerActivity.addTomPlaylist(clickedFilePath);
             }
         });
 

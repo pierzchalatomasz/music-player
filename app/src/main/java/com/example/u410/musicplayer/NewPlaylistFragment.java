@@ -25,7 +25,7 @@ public class NewPlaylistFragment extends Fragment {
     public NewPlaylistFragment() {
     }
 
-    public static NewPlaylistFragment getInstance(int i) {
+    public static NewPlaylistFragment getInstance() {
         NewPlaylistFragment fragment = new NewPlaylistFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
@@ -36,7 +36,9 @@ public class NewPlaylistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_explorer_listview, container, false);
-        mPlaylistAdapter = new NewPlaylistItemAdapter(mPlaylist);
+        TabExplorerActivity tabExplorerActivity = (TabExplorerActivity) getActivity();
+
+        mPlaylistAdapter = new NewPlaylistItemAdapter(tabExplorerActivity);
         mPlaylistListView = (ListView) rootView.findViewById(R.id.explorer_list);
         mPlaylistListView.setAdapter(mPlaylistAdapter);
         mPlaylistAdapter.notifyDataSetChanged();
