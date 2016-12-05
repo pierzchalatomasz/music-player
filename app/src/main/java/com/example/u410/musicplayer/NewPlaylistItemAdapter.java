@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,25 +35,24 @@ public class NewPlaylistItemAdapter extends BaseAdapter {
         }
     }
 
-    ArrayList<String> mPlaylist;
+    ArrayList<File> mPlaylist;
     TabExplorerActivity mTabExplorerActivity;
 
     public NewPlaylistItemAdapter(TabExplorerActivity tabExplorerActivity) {
         mTabExplorerActivity = tabExplorerActivity;
         mPlaylist = new ArrayList<>();
-        mPlaylist.add("a");
-        mPlaylist.add("dwa");
+        mPlaylist.add(new File("/storage"));
         mTabExplorerActivity.setmPlaylist(mPlaylist);
     }
 
     @Override
     public int getCount() {
-        return mPlaylist.size();
+        return mTabExplorerActivity.getmPlaylist().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mPlaylist.get(position);
+        return mTabExplorerActivity.getmPlaylist().get(position);
     }
 
     @Override
@@ -75,14 +75,14 @@ public class NewPlaylistItemAdapter extends BaseAdapter {
             holder = (NewPlaylistItemAdapter.PlaylistHolder) convertView.getTag();
         }
 
-        ArrayList<String> tempPlaylist = mTabExplorerActivity.getmPlaylist();
+        ArrayList<File> tempPlaylist = mTabExplorerActivity.getmPlaylist();
 
-        holder.songNameTextView.setText(tempPlaylist.get(position));
+        holder.songNameTextView.setText(tempPlaylist.get(position).getName());
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> tempPlaylist = mTabExplorerActivity.getmPlaylist();
+                ArrayList<File> tempPlaylist = mTabExplorerActivity.getmPlaylist();
                 tempPlaylist.remove(position);
                 NewPlaylistItemAdapter.this.notifyDataSetChanged();
             }

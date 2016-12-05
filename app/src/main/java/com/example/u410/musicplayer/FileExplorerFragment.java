@@ -74,7 +74,7 @@ public class FileExplorerFragment extends Fragment {
         String extension;
         for (File file : files) {
             extension = file.getName().toString().substring(file.getName().toString().lastIndexOf(".") + 1, file.getName().toString().length());
-            if (extension.equals("mp3")) {
+            if (extension.equals("jpg")) {
                 filesNames.add(file.getName().toString());
             }
         }

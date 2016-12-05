@@ -88,7 +88,7 @@ public class ExplorerListItemAdapter extends BaseAdapter {
             public void onClick(View view) {
                 String clickedFileName = holder.fileName.getText().toString();
                 String clickedFilePath = mPath + "/" + clickedFileName;
-                mTabExplorerActivity.addTomPlaylist(clickedFilePath);
+                mTabExplorerActivity.addTomPlaylist(new File(clickedFilePath));
             }
         });
 
