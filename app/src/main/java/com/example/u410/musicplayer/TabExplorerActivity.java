@@ -1,6 +1,5 @@
 package com.example.u410.musicplayer;
 
-import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,21 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.CheckBox;
-import android.widget.ListView;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import butterknife.ButterKnife;
-import butterknife.OnItemClick;
+import java.util.List;
 
 public class TabExplorerActivity extends AppCompatActivity {
 
@@ -42,6 +32,7 @@ public class TabExplorerActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private ArrayList<File> mPlaylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +53,6 @@ public class TabExplorerActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +80,18 @@ public class TabExplorerActivity extends AppCompatActivity {
 
     }
 
+    public ArrayList<File> getmPlaylist() {
+        return mPlaylist;
+    }
+
+    public void setmPlaylist(ArrayList<File> mPlaylist) {
+        this.mPlaylist = mPlaylist;
+    }
+
+    public void addTomPlaylist(File song) {
+        mPlaylist.add(song);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -106,15 +108,13 @@ public class TabExplorerActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case EXPLORER_TAB:
-                    return FileExplorerFragment.newInstance(position + 1);
+                    return FileExplorerFragment.getInstance();
                 case NEW_PLAYLIST_TAB:
-                    return FileExplorerFragment.newInstance(position + 1);
+                    return NewPlaylistFragment.getInstance();
             }
             return null;
-
         }
 
         @Override
