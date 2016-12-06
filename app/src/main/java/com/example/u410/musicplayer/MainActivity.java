@@ -1,5 +1,6 @@
 package com.example.u410.musicplayer;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +89,11 @@ public class MainActivity extends AppCompatActivity
                             //myPlaylist.getTracklist().get(posb);
 
                             //start player here
+                            Intent intent = new Intent(getBaseContext(), PlayerActivity.class);
+                            intent.putExtra("PLAYLIST", myPlaylist.getTracklist());
+                            intent.putExtra("TRACK_INDEX", posb);
+                            startActivity(intent);
+
                             return true;
                         }
                     }
@@ -113,10 +119,13 @@ public class MainActivity extends AppCompatActivity
     {
         public void onClick(View v)
         {
-           // Intent intent = new Intent(this, TabExplorerActivity.class);
-            //startActivity(intent);
+//            final int REQUEST_CODE = 45678;
+//
+//            Intent intent = new Intent(getBaseContext(), TabExplorerActivity.class);
+//            startActivityForResult(intent, REQUEST_CODE);
 
-            //myPlaylist.addTrack(foo); <-single track, foo as Track object
+            String path = "/storage/sdcard/Music/01 - Awake.mp3";
+            myPlaylist.addTrack(new Track(path)); // <-single track, foo as Track object
             //or myPlaylist.addTracks(whole array); <-better option
         }
     };

@@ -10,12 +10,14 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -30,6 +32,8 @@ public class PlayerActivity extends AppCompatActivity {
     @BindView(R.id.seekBar) SeekBar seekBar;
     @BindView(R.id.duration) TextView duration;
     @BindView(R.id.currentPosition) TextView currentPosition;
+    @BindView(R.id.nextButton) Button nextButton;
+    @BindView(R.id.prevButton) Button prevButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +45,21 @@ public class PlayerActivity extends AppCompatActivity {
         startService(playerIntent_);
         bindService(playerIntent_, playerServiceConnection, this.BIND_AUTO_CREATE);
 
-
+        playlist_ = getIntent().getParcelableArrayListExtra("PLAYLIST");
+        playingTrackIndex_ =  getIntent().getIntExtra("TRACK_INDEX", 0);
     }
 
     protected void init() {
         setOnTrackProgressListener();
         setOnSeekBarChangeListener();
+        setOnNextButtonClickListener();
+        setOnPrevButtonClickListener();
+        setOnTrackEndListener();
     }
 
-    protected void setData() {
-        String path = "/storage/sdcard/Android/data/com.example.u410.musicplayer/files/Music/Stereophonics - Mr and Mrs Smith.mp3";
-        Track track = new Track(path);
+    protected void setTrack(int trackIndex) {
+//        String path = "/storage/sdcard/Android/data/com.example.u410.musicplayer/files/Music/Stereophonics - Mr and Mrs Smith.mp3";
+        Track track = playlist_.get(trackIndex);
 
         artistName.setText(track.getArtistName());
         trackName.setText(track.getTrackName());
@@ -100,6 +108,8 @@ public class PlayerActivity extends AppCompatActivity {
                 float progress = (float)currentPosition / (float)player_.getDuration() * 100;
                 seekBar.setProgress((int)progress);
                 setCurrentPosition((long)currentPosition);
+
+                Log.v("m_p", "" + currentPosition + " | " + player_.getDuration());
             }
         });
     }
@@ -127,13 +137,51 @@ public class PlayerActivity extends AppCompatActivity {
         });
     }
 
+    protected void setOnTrackEndListener() {
+        player_.setOnTrackEndListener(new OnTrackEndListener() {
+            @Override
+            public void onTrackEnd() {
+
+
+                nextTrack();
+                setTrack(playingTrackIndex_);
+            }
+        });
+    };
+
+    protected void setOnNextButtonClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextTrack();
+                setTrack(playingTrackIndex_);
+            }
+        });
+    }
+
+    protected void setOnPrevButtonClickListener() {
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playingTrackIndex_ > 0) {
+                    playingTrackIndex_--;
+                }
+                else {
+                    playingTrackIndex_ = playlist_.size() - 1;
+                }
+
+                setTrack(playingTrackIndex_);
+            }
+        });
+    }
+
     protected ServiceConnection playerServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             PlayerService.PlayerBinder binder = (PlayerService.PlayerBinder) service;
             player_ = binder.getService();
 
-            setData();
+            setTrack(playingTrackIndex_);
             init();
         }
 
@@ -143,7 +191,20 @@ public class PlayerActivity extends AppCompatActivity {
         }
     };
 
+    protected void nextTrack() {
+        if (playingTrackIndex_ < playlist_.size() - 1) {
+            playingTrackIndex_++;
+        }
+        else {
+            playingTrackIndex_ = 0;
+        }
+    }
+
     private Intent playerIntent_;
 
     private PlayerService player_;
+
+    private ArrayList<Track> playlist_;
+
+    private int playingTrackIndex_;
 }

@@ -38,11 +38,18 @@ public class PlayerService extends Service {
     }
 
     public void setTrack(Track track) {
+        boolean wasPlaying = isPlaying();
+
+        player_.reset();
         track_ = track;
 
         try {
             player_.setDataSource(track_.getPath());
             player_.prepare();
+
+            if (wasPlaying) {
+                play();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,6 +76,10 @@ public class PlayerService extends Service {
         onTrackProgressListener_ = onTrackProgressListener;
     }
 
+    public void setOnTrackEndListener(OnTrackEndListener onTrackEndListener) {
+        onTrackEndListener_ = onTrackEndListener;
+    }
+
     public void seekTo(int msec) {
         player_.seekTo(msec);
     }
@@ -87,6 +98,10 @@ public class PlayerService extends Service {
             if(onTrackProgressListener_ != null) {
                 int currentPosition = player_.getCurrentPosition();
                 onTrackProgressListener_.onTrackProgress(currentPosition);
+
+                if (getDuration() - currentPosition <= 100 && onTrackEndListener_ != null) {
+                    onTrackEndListener_.onTrackEnd();
+                }
             }
 
             trackProgressHandler_.postDelayed(this, 100);
@@ -94,4 +109,6 @@ public class PlayerService extends Service {
     };
 
     private final IBinder playerBind_ = new PlayerBinder();
+
+    private OnTrackEndListener onTrackEndListener_;
 }

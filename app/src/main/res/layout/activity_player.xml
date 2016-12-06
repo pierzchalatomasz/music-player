@@ -91,14 +91,35 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/duration"
                     android:layout_weight="1" />
+
             </LinearLayout>
 
-            <Button
-                android:text="Play"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/playButton"
-                android:layout_weight="1" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:text="Prev"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prevButton"
+                    android:layout_width="80dp" />
+
+                <Button
+                    android:text="Play"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/playButton"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:text="Next"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nextButton" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
