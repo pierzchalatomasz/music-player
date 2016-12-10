@@ -41,7 +41,7 @@ public class NewPlaylistItemAdapter extends BaseAdapter {
     public NewPlaylistItemAdapter(TabExplorerActivity tabExplorerActivity) {
         mTabExplorerActivity = tabExplorerActivity;
         mPlaylist = new ArrayList<>();
-        mPlaylist.add(new File("/storage"));
+        mPlaylist.add(new File("/"));
         mTabExplorerActivity.setmPlaylist(mPlaylist);
     }
 
@@ -84,6 +84,9 @@ public class NewPlaylistItemAdapter extends BaseAdapter {
             public void onClick(View view) {
                 ArrayList<File> tempPlaylist = mTabExplorerActivity.getmPlaylist();
                 tempPlaylist.remove(position);
+                if (tempPlaylist.size() == 0) {
+                    tempPlaylist.add(new File("/"));
+                }
                 NewPlaylistItemAdapter.this.notifyDataSetChanged();
             }
         });

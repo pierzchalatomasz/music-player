@@ -1,5 +1,6 @@
 package com.example.u410.musicplayer;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity
     {
         public void onClick(View v)
         {
-           // Intent intent = new Intent(this, TabExplorerActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
+            startActivity(intent);
 
             //myPlaylist.addTrack(foo); <-single track, foo as Track object
             //or myPlaylist.addTracks(whole array); <-better option
