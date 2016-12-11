@@ -43,15 +43,16 @@ public class ExplorerListItemAdapter extends BaseAdapter {
 
     TabExplorerActivity mTabExplorerActivity;
     ArrayList<String> mFiles;
-    String mPath = Environment.getRootDirectory().toString();
+    String mPath;
 
     public void setmPath(String path) {
         this.mPath = path;
     }
 
-    public ExplorerListItemAdapter(TabExplorerActivity tabExplorerActivity, ArrayList<String> files) {
+    public ExplorerListItemAdapter(TabExplorerActivity tabExplorerActivity, ArrayList<String> files, String path) {
         mTabExplorerActivity = tabExplorerActivity;
         mFiles = files;
+        mPath = path;
     }
 
     @Override

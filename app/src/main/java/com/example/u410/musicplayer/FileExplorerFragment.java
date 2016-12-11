@@ -45,11 +45,11 @@ public class FileExplorerFragment extends Fragment {
 
         TabExplorerActivity tabExplorerActivity = (TabExplorerActivity) getActivity();
 
-        mExplorerAdapter = new ExplorerListItemAdapter(tabExplorerActivity, mFilesNames);
+        mExplorerAdapter = new ExplorerListItemAdapter(tabExplorerActivity, mFilesNames, mPath);
         mExplorerListView = (ListView) rootView.findViewById(R.id.explorer_list);
         mExplorerListView.setAdapter(mExplorerAdapter);
-        getAllFilesNamesWithExtension(mPath, mExtensions);
-        //getContentFromPath(mPath, mFilesNames);
+        //getAllFilesNamesWithExtension(mPath, mExtensions); // gets ALL files with specified extensions
+        getContentFromPath(mPath, mFilesNames); // gets only directories and files from path
         mExplorerAdapter.notifyDataSetChanged();
         ButterKnife.bind(this, rootView);
 
@@ -79,14 +79,13 @@ public class FileExplorerFragment extends Fragment {
 
     public void getOnlyFilesWithSpecifiedExtension(ArrayList<File> files, ArrayList<String> filesNames, ArrayList<String> extensions) {
         filesNames.clear();
-        String tempExtension;
+        getFilesWithSpecifiedExtension(files, filesNames, extensions);
+    }
+
+    public void getFilesWithSpecifiedExtension(ArrayList<File> files, ArrayList<String> filesNames, ArrayList<String> extensions) {
         for (File file : files) {
-            tempExtension = file.getName().toString().substring(file.getName().toString().lastIndexOf(".") + 1, file.getName().toString().length());
-            for (String extension : extensions) {
-                if (tempExtension.equals(extension)) {
-                    filesNames.add(file.getName().toString());
-                    break;
-                }
+            if (checkExtension(file, extensions)) {
+                filesNames.add(file.getName().toString());
             }
         }
     }
@@ -94,12 +93,26 @@ public class FileExplorerFragment extends Fragment {
     public void getContentFromPath(String path, ArrayList<String> filesNames) {
         File directory = new File(path);
         File[] files = directory.listFiles();
+        boolean isDirectoryOrFileWithSpecifiedExtension;
 
         filesNames.clear();
         filesNames.add("..");
         for (int i = 0; i < files.length; i++) {
-            filesNames.add(files[i].getName().toString());
+            isDirectoryOrFileWithSpecifiedExtension = files[i].isDirectory() || checkExtension(files[i], mExtensions);
+            if (isDirectoryOrFileWithSpecifiedExtension) {
+                filesNames.add(files[i].getName().toString());
+            }
         }
+    }
+
+    public boolean checkExtension(File file, ArrayList<String> extensions) {
+        String tempExtension = file.getName().toString().substring(file.getName().toString().lastIndexOf(".") + 1, file.getName().toString().length());
+        for (String extension : extensions) {
+            if (tempExtension.equals(extension)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @OnItemClick(R.id.explorer_list)
@@ -111,7 +124,6 @@ public class FileExplorerFragment extends Fragment {
         String tempPath = createPathOfClickedFile(clickedFileName);
         tryGoToPath(tempPath);
         mExplorerListView.setSelectionAfterHeaderView();
-        //Clicking twice on directory with no permissions will crash an app (fileName will append to mPath but will not go to that path)
     }
 
     private String createPathOfClickedFile(String clickedFileName) {
@@ -119,7 +131,12 @@ public class FileExplorerFragment extends Fragment {
 
         if (clickedFileName.equals("..")){
             File file = new File(mPath);
-            tempPath = file.getParentFile().getPath();
+            try {
+                tempPath = file.getParentFile().getPath();
+            }
+            catch (Exception e) {
+                tempPath = mPath;
+            }
         }
         else {
             tempPath = mPath + "/" + clickedFileName;
