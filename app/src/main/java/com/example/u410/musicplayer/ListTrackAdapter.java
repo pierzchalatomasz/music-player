@@ -3,6 +3,7 @@ package com.example.u410.musicplayer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ public class ListTrackAdapter extends ArrayAdapter<Track>
 {
         private ArrayList<Track> tracksList;
         private Context ctx;
+        private Bitmap bmp;
         public ListTrackAdapter(Context context, int textViewResourceId, ArrayList<Track> tracks)
         {
             super(context, textViewResourceId, tracks);
@@ -38,33 +40,22 @@ public class ListTrackAdapter extends ArrayAdapter<Track>
                 ImageView album = (ImageView) v.findViewById(R.id.albumPic);
                 TextView title = (TextView) v.findViewById(R.id.title);
                 TextView artist = (TextView) v.findViewById(R.id.artist);
+                byte[] pic = track.getPicture();
+                String trackName = track.getTrackName();
+                String artistName = track.getArtistName();
 
-                if(track.getPicture()!=null)
-                {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(track.getPicture(), 0, track.getPicture().length);
-                    album.setImageBitmap(bmp);
-                    album.getLayoutParams().height = 120;
-                    album.getLayoutParams().width = 120;
-                    album.requestLayout();
-                }
+                bmp = pic != null ? BitmapFactory.decodeByteArray(track.getPicture(), 0, track.getPicture().length):
+                        BitmapFactory.decodeResource(ctx.getResources(), R.drawable.music_note);
 
-                if(track.getTrackName()!= null)
-                {
-                    title.setText(track.getTrackName());
-                }
-                else
-                {
-                    title.setText(track.getPath().substring(track.getPath().lastIndexOf("/")+1));
-                }
+                album.setImageBitmap(bmp);
+                float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, ctx.getResources().getDisplayMetrics());
+                album.getLayoutParams().height = (int) px;
+                album.getLayoutParams().width = (int) px;
+                album.requestLayout();
 
-                if(track.getArtistName()!=null)
-                {
-                    artist.setText(track.getArtistName());
-                }
-                else
-                {
-                    artist.setText("unknown");
-                }
+                title.setText(trackName != null ? trackName : track.getPath().substring(track.getPath().lastIndexOf("/")+1));
+
+                artist.setText(artistName != null ? artistName : "unknown");
             }
             return v;
         }

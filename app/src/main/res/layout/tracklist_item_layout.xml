@@ -8,6 +8,9 @@
         android:id="@+id/albumPic"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:maxWidth="64dp"
+        android:maxHeight="64dp"
+        android:padding="5dp"
         android:src="@drawable/music_note" />
 
     <LinearLayout
