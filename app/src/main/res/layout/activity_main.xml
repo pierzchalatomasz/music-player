@@ -33,8 +33,10 @@
         app:backgroundTint="?attr/actionMenuTextColor"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        app:elevation="12dp"/>
-        <!--android:layout_alignBottom="@id/playlistView"
-        android:layout_alignRight="@id/playlistView"-->
+        app:elevation="12dp"
+        android:layout_margin="15dp" />
+
+    <!--android:layout_alignBottom="@id/playlistView"
+    android:layout_alignRight="@id/playlistView"-->
 
 </RelativeLayout>

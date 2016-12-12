@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity
                             //intent.putExtra("playlist", myPlaylist.getTrackList());
 
                             //start player here
+                            Intent intent = new Intent(getBaseContext(), PlayerActivity.class);
+                            intent.putExtra("PLAYLIST", myPlaylist.getTracklist());
+                            intent.putExtra("TRACK_INDEX", posb);
+                            startActivity(intent);
+
                             return true;
                         }
                     }
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
     };
+
 
     public int getPosition(int x, int y)
     {
