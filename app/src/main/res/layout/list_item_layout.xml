@@ -2,23 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:maxWidth="40dp"
+        android:layout_gravity="center_vertical"
+        android:maxWidth="30dp"
         android:maxHeight="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/image" />
 
     <TextView
         android:text="File Name"
-        android:paddingLeft="20dp"
+        android:paddingLeft="10dp"
         android:maxHeight="20dp"
         android:textSize="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:id="@+id/fileName"
         android:layout_weight="1"
         android:maxLines="1" />
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_button"
         android:focusable="false"
+        android:visibility="invisible"
         android:focusableInTouchMode="false" />
 
 
