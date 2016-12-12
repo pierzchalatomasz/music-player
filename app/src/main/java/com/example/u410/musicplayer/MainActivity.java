@@ -124,11 +124,13 @@ public class MainActivity extends AppCompatActivity
 //            Intent intent = new Intent(getBaseContext(), TabExplorerActivity.class);
 //            startActivityForResult(intent, REQUEST_CODE);
 
-            String path = "/storage/sdcard/Music/01 - Awake.mp3";
+            String path = "/storage/sdcard/Music/The Cranberries -Tomorrow.mp3";
+//            String path = "/sdcard/Download/03. Animal.mp3";
             myPlaylist.addTrack(new Track(path)); // <-single track, foo as Track object
             //or myPlaylist.addTracks(whole array); <-better option
         }
     };
+
 
     public int getPosition(int x, int y)
     {
