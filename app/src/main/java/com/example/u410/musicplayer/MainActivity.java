@@ -1,6 +1,7 @@
 package com.example.u410.musicplayer;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -82,11 +83,17 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
+                            if(posb==-1)
+                                return true;
+
+                            //delete this
                             Log.e("click", "item clicked");
                             //array of tracks: myPlaylist.getTracklist();
                             //clickedTrack = myPlaylist.getTrack(posb);
                             //also tracklist provides method to get track:
                             //myPlaylist.getTracklist().get(posb);
+
+                            //intent.putExtra("playlist", myPlaylist.getTrackList());
 
                             //start player here
                             Intent intent = new Intent(getBaseContext(), PlayerActivity.class);
@@ -119,15 +126,8 @@ public class MainActivity extends AppCompatActivity
     {
         public void onClick(View v)
         {
-//            final int REQUEST_CODE = 45678;
-//
-//            Intent intent = new Intent(getBaseContext(), TabExplorerActivity.class);
-//            startActivityForResult(intent, REQUEST_CODE);
-
-            String path = "/storage/sdcard/Music/The Cranberries -Tomorrow.mp3";
-//            String path = "/sdcard/Download/03. Animal.mp3";
-            myPlaylist.addTrack(new Track(path)); // <-single track, foo as Track object
-            //or myPlaylist.addTracks(whole array); <-better option
+            Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
+            startActivity(intent);
         }
     };
 

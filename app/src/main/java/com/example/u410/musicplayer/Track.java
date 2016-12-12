@@ -37,9 +37,7 @@ public class Track implements Parcelable{
         return meta_.extractMetadata(meta_.METADATA_KEY_GENRE);
     }
 
-    public byte[] getPicture() {
-        return meta_.getEmbeddedPicture();
-    }
+    public byte[] getPicture() { return meta_.getEmbeddedPicture(); }
 
     public String getDuration() {
         return meta_.extractMetadata(meta_.METADATA_KEY_DURATION);
