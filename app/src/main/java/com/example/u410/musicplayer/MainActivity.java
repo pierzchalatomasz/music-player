@@ -123,10 +123,6 @@ public class MainActivity extends AppCompatActivity
         {
             Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
             startActivity(intent);
-            //delete this
-            Log.e("click", "add button clicked");
-            //myPlaylist.addTrack(foo); <-single track, foo as Track object
-            //or myPlaylist.addTracks(whole array); <-better option
         }
     };
 
