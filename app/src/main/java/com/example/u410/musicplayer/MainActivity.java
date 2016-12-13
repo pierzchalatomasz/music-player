@@ -1,5 +1,6 @@
 package com.example.u410.musicplayer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import static java.lang.Math.abs;
 
 public class MainActivity extends AppCompatActivity
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     private float begx, begy;
     private int pos, posb, sortPos;
     private boolean isSorted = false, isSortedTwo = false;
+    private static final int REQUEST_CODE = 33;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         public void onClick(View v)
         {
             Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
 
@@ -135,5 +139,21 @@ public class MainActivity extends AppCompatActivity
     public int getPosition(int x, int y)
     {
         return myListView.pointToPosition(x, y);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE & resultCode == Activity.RESULT_OK & data != null) {
+            ArrayList<String> paths = data.getExtras().getStringArrayList(IntentExtras.PLAYLIST);
+            Track tempTrack;
+            for (String path : paths) {
+                try {
+                    tempTrack = new Track(path);
+                    myPlaylist.addTrack(tempTrack);
+                }
+                catch (Exception e) {}
+            }
+            myPlaylist.getAdapter().notifyDataSetChanged();
+        }
     }
 }
