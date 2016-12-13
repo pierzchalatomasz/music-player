@@ -130,6 +130,15 @@ public class MainActivity extends AppCompatActivity
     {
         public void onClick(View v)
         {
+//            String path = "/sdcard/Music/01 - Awake.mp3";
+//            myPlaylist.addTrack(new Track(path));
+//
+//            path = "/sdcard/Music/The Cranberries -Tomorrow.mp3";
+//            myPlaylist.addTrack(new Track(path));
+//
+//            path = "/sdcard/Music/Two Door Cinema Club - I Can Talk.mp3";
+//            myPlaylist.addTrack(new Track(path));
+
             Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
         }
