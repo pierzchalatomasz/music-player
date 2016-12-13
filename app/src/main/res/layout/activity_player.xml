@@ -18,7 +18,8 @@
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
             app:contentScrim="?attr/colorPrimary"
             android:background="@color/colorPrimary"
-            app:title="Music Player">
+            app:title="Music Player"
+            app:expandedTitleTextAppearance="@style/expanded_title">
 
             <ImageView
                 android:id="@+id/appBarImage"
@@ -192,11 +193,11 @@
         android:layout_width="50dp"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end"
-        android:src="@drawable/folder"
+        android:src="@drawable/lib"
         android:layout_marginRight="16dp"
         android:clickable="true"
-        app:fabSize="normal"
         app:backgroundTint="@android:color/white"
         android:padding="30dp"
-        android:id="@+id/playlistActivityButton" />
+        android:id="@+id/playlistActivityButton"
+        app:fabSize="normal" />
 </android.support.design.widget.CoordinatorLayout>
