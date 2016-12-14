@@ -1,5 +1,7 @@
 package com.example.u410.musicplayer;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,6 +36,7 @@ public class TabExplorerActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private ArrayList<File> mPlaylist;
+    private ArrayList<Track> mTracks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,6 @@ public class TabExplorerActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
     }
 
     @Override
@@ -77,7 +80,19 @@ public class TabExplorerActivity extends AppCompatActivity {
     }
 
     private void savePlaylist() {
+        Intent intent = new Intent();
+        ArrayList<String> playlistPaths = convertFilesToPaths(mPlaylist);
+        intent.putExtra(IntentExtras.PLAYLIST, playlistPaths);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
 
+    private ArrayList<String> convertFilesToPaths(ArrayList<File> files) {
+        ArrayList<String> paths = new ArrayList<>();
+        for (File file : files) {
+            paths.add(file.getPath());
+        }
+        return paths;
     }
 
     public ArrayList<File> getmPlaylist() {
