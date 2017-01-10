@@ -99,7 +99,12 @@ public class PlayerService extends Service {
     }
 
     public void setPlayingTrackIndex(int index) {
+        prevPlayingTrackIndex_ = playingTrackIndex_;
         playingTrackIndex_ = index;
+    }
+
+    public int getPrevPlayingTrackIndex() {
+        return prevPlayingTrackIndex_;
     }
 
     public void setRandomState(boolean random) {
@@ -153,6 +158,8 @@ public class PlayerService extends Service {
     private ArrayList<Track> playlist_;
 
     private int playingTrackIndex_;
+
+    private int prevPlayingTrackIndex_;
 
     private boolean random_;
 

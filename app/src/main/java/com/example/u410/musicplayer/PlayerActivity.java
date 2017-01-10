@@ -91,9 +91,12 @@ public class PlayerActivity extends AppCompatActivity {
             setTrack(player_.getPlayingTrackIndex(), false);
         }
 
-        showNotification();
         togglePlayButtonText();
         randomCheckBox.setChecked(player_.getRandomState());
+
+        if (player_.isPlaying()) {
+            showNotification();
+        }
     }
 
     protected void setTrack(int trackIndex, boolean setTrack) {
@@ -263,7 +266,10 @@ public class PlayerActivity extends AppCompatActivity {
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (player_.getPlayingTrackIndex() > 0) {
+                if (randomCheckBox.isChecked()) {
+                    player_.setPlayingTrackIndex(player_.getPrevPlayingTrackIndex());
+                }
+                else if (player_.getPlayingTrackIndex() > 0) {
                     player_.setPlayingTrackIndex(player_.getPlayingTrackIndex() -1);
                 }
                 else {

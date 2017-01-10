@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     private float begx, begy;
     private int pos, posb, sortPos;
     private boolean isSorted = false, isSortedTwo = false;
+    private static final int REQUEST_CODE = 33;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         public void onClick(View v)
         {
             Intent intent = new Intent(MainActivity.this, TabExplorerActivity.class);
-            startActivityForResult(intent, 33);
+            startActivityForResult(intent, REQUEST_CODE);
         }
     };
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 33 & resultCode == Activity.RESULT_OK & data != null) {
+        if (requestCode == REQUEST_CODE & resultCode == Activity.RESULT_OK & data != null) {
             ArrayList<String> paths = data.getExtras().getStringArrayList(IntentExtras.PLAYLIST);
             Track tempTrack;
             for (String path : paths) {
